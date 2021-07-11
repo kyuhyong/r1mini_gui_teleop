@@ -17,7 +17,7 @@
 #include "qnode.hpp"
 #include <QImage>//added
 #include <QMutex>//added
-
+#include <QColor>
 /*****************************************************************************
 ** Namespace
 *****************************************************************************/
@@ -66,11 +66,18 @@ private Q_SLOTS:
   void updateLogcamera();//added
   void displayCamera(const QImage& image);//added
 
+  void on_buttonTurnZero_clicked();
+
+  void on_checkBoxHeadlightOnOff_clicked(bool checked);
+
+  void on_buttonSetColor_clicked();
+
 private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;
   QImage qimage_;//added
   mutable QMutex qimage_mutex_;//added
+  QColor dispColor;     //Robot display color
 };
 
 }  // namespace r1mini_gui_teleop

@@ -17,16 +17,27 @@ find_package(catkin REQUIRED COMPONENTS
     sensor_msgs
     cv_bridge
     image_transport
+    message_generation
     )
 find_package(OpenCV REQUIRED)
 
+add_service_files(
+  DIRECTORY srv
+  FILES
+  Color.srv
+)
+generate_messages(DEPENDENCIES std_msgs)
 include_directories(
     ${catkin_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS})
 # Use this to define what the package will export (e.g. libs, headers).
 # Since the default here is to produce only a binary, we don't worry about
 # exporting anything. 
-catkin_package()
+catkin_package(
+    CATKIN_DEPENDS
+    message_runtime
+    std_msgs
+)
 
 ##############################################################################
 # Qt Environment
@@ -57,7 +68,6 @@ file(GLOB_RECURSE QT_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} FOLLOW_SYMLINK
 ##############################################################################
 # Binaries
 ##############################################################################
-
 add_executable(r1mini_gui_teleop ${QT_SOURCES} ${QT_RESOURCES_CPP} ${QT_FORMS_HPP} ${QT_MOC_HPP})
 target_link_libraries(r1mini_gui_teleop ${QT_LIBRARIES} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 install(TARGETS r1mini_gui_teleop RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})

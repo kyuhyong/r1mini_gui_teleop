@@ -18,6 +18,7 @@
 #include <sstream>
 #include "../include/r1mini_gui_teleop/qnode.hpp"
 #include <sensor_msgs/image_encodings.h>//added head file
+
 /*****************************************************************************
 ** Namespaces
 *****************************************************************************/
@@ -76,6 +77,7 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   image_sub = it.subscribe("/main_camera/image_raw",100, &QNode::myCallback_img,this,hints);
   //image_sub = it.subscribe("/main_camera/image_raw",100,&QNode::myCallback_img,this);           //This is slow
   //image_sub = it.subscribe("/main_camera/image_raw/compressed",100,&QNode::myCallback_img,this);  //This will not work
+  serviceClient = n.serviceClient<r1mini_gui_teleop::Color>("/set_led_color");
 	start();
 	return true;
 }
@@ -105,6 +107,12 @@ void QNode::myCallback_img(const sensor_msgs::ImageConstPtr &msg){
     ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
   }
 }
+void QNode::setColor(int64 red, int64 green, int64 blue) {
+  serviceSetColor.request.red = red;
+  serviceSetColor.request.green = green;
+  serviceSetColor.request.blue = blue;
+  serviceClient.call(serviceSetColor);
+}
 
 void QNode::pub_twist_vw(double v, double w) {
   geometry_msgs::Twist twist;
@@ -133,6 +141,9 @@ void QNode::ang_right(){
 }
 void QNode::stop(){
   vel_v_m_s = 0.0;
+  vel_w_rad_s = 0.0;
+}
+void QNode::ang_zero(){
   vel_w_rad_s = 0.0;
 }
 double QNode::constrain(double vel, double max, double min){

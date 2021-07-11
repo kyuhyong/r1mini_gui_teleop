@@ -32,6 +32,8 @@
 #include <cv_bridge/cv_bridge.h>
 #include <QImage>
 
+#include "r1mini_gui_teleop/Color.h"    //For set_led_color service
+
 #define MAX_LIN_VEL 1.20
 #define MAX_ANG_VEL 1.80
 #define LIN_VEL_STEP_SIZE 0.05
@@ -76,6 +78,8 @@ public:
   void ang_left(void);
   void ang_right(void);
   void stop(void);
+  void ang_zero(void);
+  void setColor(int64 red, int64 green, int64 blue);
 
 Q_SIGNALS:
 	void loggingUpdated();
@@ -104,6 +108,11 @@ private:
    *******************************/
   image_transport::Subscriber image_sub;
   cv::Mat img;
+  /********************************
+   * Services
+   *******************************/
+  ros::ServiceClient serviceClient;   //Client node to call service
+  r1mini_gui_teleop::Color serviceSetColor;  //Service set color
 };
 
 }  // namespace r1mini_gui_teleop

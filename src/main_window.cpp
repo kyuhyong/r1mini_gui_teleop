@@ -13,6 +13,7 @@
 #include <QMessageBox>
 #include <iostream>
 #include "../include/r1mini_gui_teleop/main_window.hpp"
+#include <QColorDialog>
 
 /*****************************************************************************
 ** Namespaces
@@ -211,4 +212,24 @@ void r1mini_gui_teleop::MainWindow::on_button_move_left_clicked()
 void r1mini_gui_teleop::MainWindow::on_button_move_right_clicked()
 {
   qnode.ang_right();
+}
+
+void r1mini_gui_teleop::MainWindow::on_buttonTurnZero_clicked()
+{
+  qnode.ang_zero();
+}
+
+void r1mini_gui_teleop::MainWindow::on_checkBoxHeadlightOnOff_clicked(bool checked)
+{
+
+}
+
+void r1mini_gui_teleop::MainWindow::on_buttonSetColor_clicked()
+{
+  QColor newColor = QColorDialog::getColor(dispColor,parentWidget());
+  if(newColor != dispColor) {
+    dispColor = newColor;
+    std::cout << "Color Set: R=" << dispColor.red() << " G="<<dispColor.green()<<" B="<<dispColor.blue() << std::endl;
+    qnode.setColor(dispColor.red(), dispColor.green(), dispColor.blue());
+  }
 }
