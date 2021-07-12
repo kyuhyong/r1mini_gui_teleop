@@ -33,6 +33,7 @@
 #include <QImage>
 
 #include "r1mini_gui_teleop/Color.h"    //For set_led_color service
+#include "r1mini_gui_teleop/Onoff.h"    //For set_led_color service
 
 #define MAX_LIN_VEL 1.20
 #define MAX_ANG_VEL 1.80
@@ -80,6 +81,7 @@ public:
   void stop(void);
   void ang_zero(void);
   void setColor(int64 red, int64 green, int64 blue);
+  void setHeadlight(bool set);
 
 Q_SIGNALS:
 	void loggingUpdated();
@@ -111,8 +113,10 @@ private:
   /********************************
    * Services
    *******************************/
-  ros::ServiceClient serviceClient;   //Client node to call service
+  ros::ServiceClient clientSetColor;   //Client node to call service
   r1mini_gui_teleop::Color serviceSetColor;  //Service set color
+  ros::ServiceClient clientSetHeadlight;   //Client node to call service
+  r1mini_gui_teleop::Onoff serviceSetHeadlight; //Service set headlight
 };
 
 }  // namespace r1mini_gui_teleop

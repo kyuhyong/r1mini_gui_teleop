@@ -25,6 +25,7 @@ add_service_files(
   DIRECTORY srv
   FILES
   Color.srv
+  Onoff.srv
 )
 generate_messages(DEPENDENCIES std_msgs)
 include_directories(

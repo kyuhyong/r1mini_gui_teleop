@@ -77,7 +77,8 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   image_sub = it.subscribe("/main_camera/image_raw",100, &QNode::myCallback_img,this,hints);
   //image_sub = it.subscribe("/main_camera/image_raw",100,&QNode::myCallback_img,this);           //This is slow
   //image_sub = it.subscribe("/main_camera/image_raw/compressed",100,&QNode::myCallback_img,this);  //This will not work
-  serviceClient = n.serviceClient<r1mini_gui_teleop::Color>("/set_led_color");
+  clientSetColor = n.serviceClient<r1mini_gui_teleop::Color>("/set_led_color");
+  clientSetHeadlight = n.serviceClient<r1mini_gui_teleop::Onoff>("/set_headlight");
 	start();
 	return true;
 }
@@ -111,7 +112,11 @@ void QNode::setColor(int64 red, int64 green, int64 blue) {
   serviceSetColor.request.red = red;
   serviceSetColor.request.green = green;
   serviceSetColor.request.blue = blue;
-  serviceClient.call(serviceSetColor);
+  clientSetColor.call(serviceSetColor);
+}
+void QNode::setHeadlight(bool set){
+  serviceSetHeadlight.request.set = set;
+  clientSetHeadlight.call(serviceSetHeadlight);
 }
 
 void QNode::pub_twist_vw(double v, double w) {

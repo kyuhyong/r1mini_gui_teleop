@@ -221,7 +221,7 @@ void r1mini_gui_teleop::MainWindow::on_buttonTurnZero_clicked()
 
 void r1mini_gui_teleop::MainWindow::on_checkBoxHeadlightOnOff_clicked(bool checked)
 {
-
+  qnode.setHeadlight(checked);
 }
 
 void r1mini_gui_teleop::MainWindow::on_buttonSetColor_clicked()
