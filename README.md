@@ -45,5 +45,5 @@ And you will see below window.
 
 Enjoy!
 
-Project r1mini_gui_teleop written by Khyuhyong
+Project r1mini_gui_teleop written by Kyuhyong
 2021(c)OMOROBOT INC.
