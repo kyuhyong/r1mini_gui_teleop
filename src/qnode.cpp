@@ -18,6 +18,7 @@
 #include <sstream>
 #include "../include/r1mini_gui_teleop/qnode.hpp"
 #include <sensor_msgs/image_encodings.h>//added head file
+#include <geometry_msgs/Pose.h>
 
 /*****************************************************************************
 ** Namespaces
@@ -72,11 +73,15 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   vel_w_stepSize = ANG_VEL_STEP_SIZE;
   pub_twist = n.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
 	chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
+  // Subscriptions
   image_transport::ImageTransport it(n);
   image_transport::TransportHints hints("compressed");
   image_sub = it.subscribe("/main_camera/image_raw",100, &QNode::myCallback_img,this,hints);
   //image_sub = it.subscribe("/main_camera/image_raw",100,&QNode::myCallback_img,this);           //This is slow
   //image_sub = it.subscribe("/main_camera/image_raw/compressed",100,&QNode::myCallback_img,this);  //This will not work
+  sub_odom = n.subscribe("odom",1000,&QNode::myCallback_odom, this);
+  sub_pose = n.subscribe("pose",1000,&QNode::myCallback_pose, this);
+  // Service call
   clientSetColor = n.serviceClient<r1mini_gui_teleop::Color>("/set_led_color");
   clientSetHeadlight = n.serviceClient<r1mini_gui_teleop::Onoff>("/set_headlight");
 	start();
@@ -108,6 +113,22 @@ void QNode::myCallback_img(const sensor_msgs::ImageConstPtr &msg){
     ROS_ERROR("Could not convert from '%s' to 'bgr8'.", msg->encoding.c_str());
   }
 }
+
+void QNode::myCallback_odom(const nav_msgs::Odometry::ConstPtr &msg){
+  //ROS_INFO("Position-> x: [%f], y: [%f], z: [%f]", msg->pose.pose.position.x,msg->pose.pose.position.y, msg->pose.pose.position.z);
+  odom_x = msg->pose.pose.position.x;
+  odom_y = msg->pose.pose.position.y;
+  odom_theta = msg->pose.pose.orientation.z * 180*M_1_PI;
+  Q_EMIT newDataReceived(msgType_odom);
+
+}
+void QNode::myCallback_pose(const geometry_msgs::Pose::ConstPtr &msg){
+  pose_x = msg->orientation.x;
+  pose_y = msg->orientation.y;
+  pose_z = msg->orientation.z;
+  Q_EMIT newDataReceived(msgType_pose);
+}
+
 void QNode::setColor(int64 red, int64 green, int64 blue) {
   serviceSetColor.request.red = red;
   serviceSetColor.request.green = green;
@@ -150,6 +171,24 @@ void QNode::stop(){
 }
 void QNode::ang_zero(){
   vel_w_rad_s = 0.0;
+}
+double QNode::get_odo_x(){
+  return odom_x;
+}
+double QNode::get_odo_y(){
+  return odom_y;
+}
+double QNode::get_odo_theta(){
+  return odom_theta;
+}
+double QNode::get_Roll(){
+  return pose_x;
+}
+double QNode::get_Pitch(){
+  return pose_y;
+}
+double QNode::get_Yaw(){
+  return pose_z;
 }
 double QNode::constrain(double vel, double max, double min){
   if(vel > max) return max;

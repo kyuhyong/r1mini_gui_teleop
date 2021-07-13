@@ -42,10 +42,11 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	/*********************
 	** Logging
 	**********************/
+    qRegisterMetaType<QNode::MsgType>("QNode::MsgType");
 	ui.view_logging->setModel(qnode.loggingModel());
     QObject::connect(&qnode, SIGNAL(loggingUpdated()), this, SLOT(updateLoggingView()));
-    QObject::connect(&qnode,SIGNAL(loggingCamera()),this,SLOT(updateLogcamera()));  //Added
-
+    QObject::connect(&qnode, SIGNAL(loggingCamera()),this,SLOT(updateLogcamera()));  //Added
+    QObject::connect(&qnode, SIGNAL(newDataReceived(QNode::MsgType)), this, SLOT(onNewData(QNode::MsgType)));
     /*********************
     ** Auto Start
     **********************/
@@ -134,7 +135,26 @@ void MainWindow::updateLogcamera()
   //std::cout << "updateLogcamera." << std::endl;
   displayCamera(qnode.image);
 }
+void MainWindow::onNewData(QNode::MsgType type)
+{
+  //std::cout << "New Msg" << msgType<< std::endl;
+  //ui.textbox_odo_x->setText(QString::number(qnode.get_odo_x()));
+  switch(type){
+    case QNode::MsgType::msgType_odom:
+      ui.textbox_odo_x->setText(QString::number(qnode.get_odo_x()));
+      ui.textbox_odo_y->setText(QString::number(qnode.get_odo_y()));
+      ui.textbox_odo_theta->setText(QString::number(qnode.get_odo_theta()));
+      break;
+    case QNode::MsgType::msgType_pose:
+      ui.textbox_pose_x->setText(QString::number(qnode.get_Roll()));
+      ui.textbox_pose_y->setText(QString::number(qnode.get_Pitch()));
+      ui.textbox_pose_z->setText(QString::number(qnode.get_Yaw()));
+      break;
+    case QNode::MsgType::msgType_battery:
 
+      break;
+  }
+}
 /*****************************************************************************
 ** Implementation [Menu]
 *****************************************************************************/
@@ -232,4 +252,9 @@ void r1mini_gui_teleop::MainWindow::on_buttonSetColor_clicked()
     std::cout << "Color Set: R=" << dispColor.red() << " G="<<dispColor.green()<<" B="<<dispColor.blue() << std::endl;
     qnode.setColor(dispColor.red(), dispColor.green(), dispColor.blue());
   }
+}
+
+void r1mini_gui_teleop::MainWindow::on_checkGetIMU_clicked(bool checked)
+{
+
 }

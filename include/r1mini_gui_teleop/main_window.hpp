@@ -56,6 +56,7 @@ public Q_SLOTS:
     ** Manual connections
     *******************************************/
     void updateLoggingView(); // no idea why this can't connect automatically
+    void onNewData(QNode::MsgType);
 
 private Q_SLOTS:
   void on_button_move_stop_clicked();
@@ -71,6 +72,8 @@ private Q_SLOTS:
   void on_checkBoxHeadlightOnOff_clicked(bool checked);
 
   void on_buttonSetColor_clicked();
+
+  void on_checkGetIMU_clicked(bool checked);
 
 private:
 	Ui::MainWindowDesign ui;

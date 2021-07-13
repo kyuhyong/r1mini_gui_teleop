@@ -32,6 +32,10 @@
 #include <cv_bridge/cv_bridge.h>
 #include <QImage>
 
+#include <geometry_msgs/Twist.h>
+#include <geometry_msgs/Pose.h>
+#include <nav_msgs/Odometry.h>
+
 #include "r1mini_gui_teleop/Color.h"    //For set_led_color service
 #include "r1mini_gui_teleop/Onoff.h"    //For set_led_color service
 
@@ -61,6 +65,10 @@ public:
   //Added to image_view
   void myCallback_img(const sensor_msgs::ImageConstPtr& msg);//camera callback function
   QImage image;
+  //Added to odom message
+  void myCallback_odom(const nav_msgs::Odometry::ConstPtr& msg);
+  //Added to pose message
+  void myCallback_pose(const geometry_msgs::Pose::ConstPtr& msg);
 	/*********************
 	** Logging
 	**********************/
@@ -71,6 +79,11 @@ public:
 	         Error,
 	         Fatal
 	 };
+  enum MsgType {
+          msgType_odom,
+          msgType_pose,
+          msgType_battery
+  };
 
 	QStringListModel* loggingModel() { return &logging_model; }
 	void log( const LogLevel &level, const std::string &msg);
@@ -82,11 +95,18 @@ public:
   void ang_zero(void);
   void setColor(int64 red, int64 green, int64 blue);
   void setHeadlight(bool set);
+  double get_Roll();
+  double get_Pitch();
+  double get_Yaw();
+  double get_odo_x();
+  double get_odo_y();
+  double get_odo_theta();
 
 Q_SIGNALS:
 	void loggingUpdated();
     void rosShutdown();
     void loggingCamera();//Send a signal to set the camera picture
+    void newDataReceived(QNode::MsgType type); //delegation for new data event
 
 private:
 	int init_argc;
@@ -110,6 +130,21 @@ private:
    *******************************/
   image_transport::Subscriber image_sub;
   cv::Mat img;
+  /********************************
+   * Subscribe ODOM data
+   * *****************************/
+  double odom_x;
+  double odom_y;
+  double odom_theta;
+  ros::Subscriber sub_odom;
+  /********************************
+   * Subscribe pose data
+   * *****************************/
+  double pose_x;
+  double pose_y;
+  double pose_z;
+  ros::Subscriber sub_pose;
+
   /********************************
    * Services
    *******************************/
