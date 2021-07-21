@@ -280,3 +280,8 @@ void r1mini_gui_teleop::MainWindow::on_buttonCalibrateGyro_clicked()
 {
     qnode.service_call_Calg();
 }
+
+void r1mini_gui_teleop::MainWindow::on_buttonResetOdom_clicked()
+{
+    qnode.service_call_resetOdom();
+}

@@ -87,6 +87,7 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   clientSetColor = n.serviceClient<r1mini_gui_teleop::Color>("/set_led_color");
   clientSetHeadlight = n.serviceClient<r1mini_gui_teleop::Onoff>("/set_headlight");
   clientCalg = n.serviceClient<r1mini_gui_teleop::Calg>("/calibrate_gyro");
+  clientResetOdom = n.serviceClient<r1mini_gui_teleop::ResetOdom>("/reset_odom");
 
 	start();
 	return true;
@@ -155,6 +156,13 @@ void QNode::service_call_headlight(bool set){
 void QNode::service_call_Calg() {
   std::cout<<"Service Call Calg"<<std::endl;
   clientCalg.call(serviceCalg);
+}
+
+void QNode::service_call_resetOdom() {
+  serviceResetOdom.request.x = 0.0;
+  serviceResetOdom.request.y = 0.0;
+  serviceResetOdom.request.theta = 0.0;
+  clientResetOdom.call(serviceResetOdom);
 }
 
 void QNode::pub_twist_vw(double v, double w) {

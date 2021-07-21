@@ -110,6 +110,7 @@ public:
   void set_image_title(string &title);
   void set_image_count(int cnt);
   void service_call_Calg();
+  void service_call_resetOdom();
 
 Q_SIGNALS:
 	void loggingUpdated();
@@ -165,6 +166,8 @@ private:
   r1mini_gui_teleop::Onoff serviceSetHeadlight; //Service set headlight
   ros::ServiceClient clientCalg;    //Client node to call service
   r1mini_gui_teleop::Calg serviceCalg;  //Service calibrate gyro
+  ros::ServiceClient clientResetOdom;
+  r1mini_gui_teleop::ResetOdom serviceResetOdom;
 };
 
 }  // namespace r1mini_gui_teleop

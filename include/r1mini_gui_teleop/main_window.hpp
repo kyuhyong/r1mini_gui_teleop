@@ -83,6 +83,8 @@ private Q_SLOTS:
 
   void on_buttonCalibrateGyro_clicked();
 
+  void on_buttonResetOdom_clicked();
+
 private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;

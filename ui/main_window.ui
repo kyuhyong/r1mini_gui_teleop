@@ -630,7 +630,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="pushButton">
+             <widget class="QPushButton" name="buttonResetOdom">
               <property name="text">
                <string>RESET</string>
               </property>
