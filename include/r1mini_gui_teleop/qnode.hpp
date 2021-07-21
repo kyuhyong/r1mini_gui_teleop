@@ -37,7 +37,9 @@
 #include <nav_msgs/Odometry.h>
 
 #include "r1mini_gui_teleop/Color.h"    //For set_led_color service
-#include "r1mini_gui_teleop/Onoff.h"    //For set_led_color service
+#include "r1mini_gui_teleop/Onoff.h"    //For set_headlight service
+#include "r1mini_gui_teleop/Calg.h"     //For gyro calibration service
+#include "r1mini_gui_teleop/ResetOdom.h"//For reset odometry data service
 
 #define MAX_LIN_VEL 1.20
 #define MAX_ANG_VEL 1.80
@@ -50,6 +52,9 @@
 
 namespace r1mini_gui_teleop {
 
+using std::cout; using std::cin;
+using std::endl; using std::string;
+using std::to_string;
 /*****************************************************************************
 ** Class
 *****************************************************************************/
@@ -64,7 +69,7 @@ public:
 	void run();
   //Added to image_view
   void myCallback_img(const sensor_msgs::ImageConstPtr& msg);//camera callback function
-  QImage image;
+  QImage qimage;
   //Added to odom message
   void myCallback_odom(const nav_msgs::Odometry::ConstPtr& msg);
   //Added to pose message
@@ -93,14 +98,18 @@ public:
   void ang_right(void);
   void stop(void);
   void ang_zero(void);
-  void setColor(int64 red, int64 green, int64 blue);
-  void setHeadlight(bool set);
+  void service_call_setColor(int64 red, int64 green, int64 blue);
+  void service_call_headlight(bool set);
   double get_Roll();
   double get_Pitch();
   double get_Yaw();
   double get_odo_x();
   double get_odo_y();
   double get_odo_theta();
+  void save_current_image();
+  void set_image_title(string &title);
+  void set_image_count(int cnt);
+  void service_call_Calg();
 
 Q_SIGNALS:
 	void loggingUpdated();
@@ -144,6 +153,8 @@ private:
   double pose_y;
   double pose_z;
   ros::Subscriber sub_pose;
+  int img_file_num;
+  std::string img_file_name;
 
   /********************************
    * Services
@@ -152,6 +163,8 @@ private:
   r1mini_gui_teleop::Color serviceSetColor;  //Service set color
   ros::ServiceClient clientSetHeadlight;   //Client node to call service
   r1mini_gui_teleop::Onoff serviceSetHeadlight; //Service set headlight
+  ros::ServiceClient clientCalg;    //Client node to call service
+  r1mini_gui_teleop::Calg serviceCalg;  //Service calibrate gyro
 };
 
 }  // namespace r1mini_gui_teleop

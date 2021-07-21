@@ -61,6 +61,8 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
 	remappings["__master"] = master_url;
 	remappings["__hostname"] = host_url;
 	ros::init(remappings,"r1mini_gui_teleop");
+  this->img_file_num = 0;
+  this->img_file_name = "Unknown";
 	if ( ! ros::master::check() ) {
 		return false;
 	}
@@ -84,6 +86,8 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   // Service call
   clientSetColor = n.serviceClient<r1mini_gui_teleop::Color>("/set_led_color");
   clientSetHeadlight = n.serviceClient<r1mini_gui_teleop::Onoff>("/set_headlight");
+  clientCalg = n.serviceClient<r1mini_gui_teleop::Calg>("/calibrate_gyro");
+
 	start();
 	return true;
 }
@@ -104,7 +108,7 @@ void QNode::myCallback_img(const sensor_msgs::ImageConstPtr &msg){
   {
     cv_bridge::CvImageConstPtr cv_ptr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::RGB8);
     img = cv_ptr->image;
-    image = QImage(img.data, img.cols, img.rows, img.step[0], QImage::Format_RGB888);//change  to QImage format
+    qimage = QImage(img.data, img.cols, img.rows, img.step[0], QImage::Format_RGB888);//change  to QImage format
     //ROS_INFO("I'm setting picture in mul_t callback function!");
     Q_EMIT loggingCamera();
   }
@@ -128,16 +132,29 @@ void QNode::myCallback_pose(const geometry_msgs::Pose::ConstPtr &msg){
   pose_z = msg->orientation.z;
   Q_EMIT newDataReceived(msgType_pose);
 }
-
-void QNode::setColor(int64 red, int64 green, int64 blue) {
+void QNode::save_current_image() {
+  cv::imwrite(this->img_file_name + "_"+ to_string(img_file_num++) + ".jpg", this->img);
+}
+void QNode::set_image_title(string &title){
+  this->img_file_name = title;
+}
+void QNode::set_image_count(int cnt) {
+  this->img_file_num = cnt;
+}
+void QNode::service_call_setColor(int64 red, int64 green, int64 blue) {
   serviceSetColor.request.red = red;
   serviceSetColor.request.green = green;
   serviceSetColor.request.blue = blue;
   clientSetColor.call(serviceSetColor);
 }
-void QNode::setHeadlight(bool set){
+void QNode::service_call_headlight(bool set){
   serviceSetHeadlight.request.set = set;
   clientSetHeadlight.call(serviceSetHeadlight);
+}
+
+void QNode::service_call_Calg() {
+  std::cout<<"Service Call Calg"<<std::endl;
+  clientCalg.call(serviceCalg);
 }
 
 void QNode::pub_twist_vw(double v, double w) {

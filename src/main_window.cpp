@@ -38,12 +38,12 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
 	setWindowIcon(QIcon(":/images/icon.png"));
 	ui.tab_manager->setCurrentIndex(0); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
-
+  ui.dock_status->show();     //Display dock_status as default
 	/*********************
 	** Logging
 	**********************/
     qRegisterMetaType<QNode::MsgType>("QNode::MsgType");
-	ui.view_logging->setModel(qnode.loggingModel());
+    //ui.view_logging->setModel(qnode.loggingModel());
     QObject::connect(&qnode, SIGNAL(loggingUpdated()), this, SLOT(updateLoggingView()));
     QObject::connect(&qnode, SIGNAL(loggingCamera()),this,SLOT(updateLogcamera()));  //Added
     QObject::connect(&qnode, SIGNAL(newDataReceived(QNode::MsgType)), this, SLOT(onNewData(QNode::MsgType)));
@@ -116,7 +116,7 @@ void MainWindow::on_checkbox_use_environment_stateChanged(int state) {
  * the user can always see the latest log message.
  */
 void MainWindow::updateLoggingView() {
-        ui.view_logging->scrollToBottom();
+        //ui.view_logging->scrollToBottom();
 }
 
 void MainWindow::displayCamera(const QImage &image)
@@ -125,15 +125,15 @@ void MainWindow::displayCamera(const QImage &image)
   qimage_mutex_.lock();
   //std::cout << "copy." << std::endl;
   //qimage_ = image.copy();
-  ui.label_camera->setPixmap(QPixmap::fromImage(image));
+  ui.logging_cam->setPixmap(QPixmap::fromImage(image));
   //ui.label_camera->setPixmap(QPixmap::fromImage(qimage_));
-  ui.label_camera->resize(ui.label_camera->pixmap()->size());
+  ui.logging_cam->resize(ui.logging_cam->pixmap()->size());
   qimage_mutex_.unlock();
 }
 void MainWindow::updateLogcamera()
 {
   //std::cout << "updateLogcamera." << std::endl;
-  displayCamera(qnode.image);
+  displayCamera(qnode.qimage);
 }
 void MainWindow::onNewData(QNode::MsgType type)
 {
@@ -160,7 +160,7 @@ void MainWindow::onNewData(QNode::MsgType type)
 *****************************************************************************/
 
 void MainWindow::on_actionAbout_triggered() {
-    QMessageBox::about(this, tr("About ..."),tr("<h2>PACKAGE_NAME Test Program 0.10</h2><p>Copyright Yujin Robot</p><p>This package needs an about description.</p>"));
+    QMessageBox::about(this, tr("About ..."),tr("<h2>PACKAGE_NAME R1mini GUI Demo Program 0.10</h2><p>2021(c) OMOROBOT Inc</p><p><a href=""http://www.omorobot.com"">Visit omorobot.com</a>.</p>"));
 }
 
 /*****************************************************************************
@@ -241,7 +241,7 @@ void r1mini_gui_teleop::MainWindow::on_buttonTurnZero_clicked()
 
 void r1mini_gui_teleop::MainWindow::on_checkBoxHeadlightOnOff_clicked(bool checked)
 {
-  qnode.setHeadlight(checked);
+  qnode.service_call_headlight(checked);
 }
 
 void r1mini_gui_teleop::MainWindow::on_buttonSetColor_clicked()
@@ -250,11 +250,33 @@ void r1mini_gui_teleop::MainWindow::on_buttonSetColor_clicked()
   if(newColor != dispColor) {
     dispColor = newColor;
     std::cout << "Color Set: R=" << dispColor.red() << " G="<<dispColor.green()<<" B="<<dispColor.blue() << std::endl;
-    qnode.setColor(dispColor.red(), dispColor.green(), dispColor.blue());
+    qnode.service_call_setColor(dispColor.red(), dispColor.green(), dispColor.blue());
   }
 }
 
 void r1mini_gui_teleop::MainWindow::on_checkGetIMU_clicked(bool checked)
 {
 
+}
+
+
+void r1mini_gui_teleop::MainWindow::on_buttonCaptureImage_clicked()
+{
+    qnode.save_current_image();
+}
+
+void r1mini_gui_teleop::MainWindow::on_textboxCaptureTitle_textChanged(const QString &arg1)
+{
+  std::string utf8_text = arg1.toUtf8().constData();
+  qnode.set_image_title(utf8_text);
+}
+
+void r1mini_gui_teleop::MainWindow::on_spinBoxImageCountNum_valueChanged(int arg1)
+{
+  qnode.set_image_count(arg1);
+}
+
+void r1mini_gui_teleop::MainWindow::on_buttonCalibrateGyro_clicked()
+{
+    qnode.service_call_Calg();
 }

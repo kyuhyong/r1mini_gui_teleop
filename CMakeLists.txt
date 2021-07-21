@@ -26,6 +26,8 @@ add_service_files(
   FILES
   Color.srv
   Onoff.srv
+  Calg.srv
+  ResetOdom.srv
 )
 generate_messages(DEPENDENCIES std_msgs)
 include_directories(
