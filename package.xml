@@ -7,8 +7,9 @@
      r1mini_gui_teleop
 
   </description>
-  <maintainer email="cto@gmail.com">cto</maintainer>
-  <author>cto</author>
+  <maintainer email="kyuhyong@omorobot.com">KyuhyongYou</maintainer>
+  <author email="kyuhyong@omorobot.com">KyuhyongYou</author>
+  <url type="website">http://omorobot.com</url>
   <license>BSD</license>
   <!-- <url type="bugtracker">https://github.com/stonier/qt_ros/issues</url> -->
   <!-- <url type="repository">https://github.com/stonier/qt_ros</url> -->
@@ -18,11 +19,15 @@
   <build_depend>roscpp</build_depend>
   <build_depend>libqt4-dev</build_depend>
   <build_depend>message_generation</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>tf</build_depend>
   <run_depend>qt_build</run_depend>
   <run_depend>roscpp</run_depend>
   <run_depend>libqt4-dev</run_depend>
   <run_depend>message_runtime</run_depend>
   <run_depend>std_msgs</run_depend>
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>tf</run_depend>
 
  
 </package>
