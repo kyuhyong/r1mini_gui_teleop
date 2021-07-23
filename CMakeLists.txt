@@ -1,38 +1,39 @@
 ##############################################################################
 # CMake
 ##############################################################################
-
 cmake_minimum_required(VERSION 2.8.0)
 project(r1mini_gui_teleop)
 
 ##############################################################################
 # Catkin
 ##############################################################################
-
 # qt_build provides the qt cmake glue, roscpp the comms for a default talker
 find_package(catkin REQUIRED COMPONENTS
     qt_build
     roscpp
     std_msgs
+    geometry_msgs
     sensor_msgs
     cv_bridge
     image_transport
     message_generation
-    )
+)
 find_package(OpenCV REQUIRED)
 
 add_service_files(
-  DIRECTORY srv
   FILES
+  Calg.srv
   Color.srv
   Onoff.srv
-  Calg.srv
   ResetOdom.srv
 )
 generate_messages(DEPENDENCIES std_msgs)
+
 include_directories(
     ${catkin_INCLUDE_DIRS}
-    ${OpenCV_INCLUDE_DIRS})
+    ${OpenCV_INCLUDE_DIRS}
+)
+
 # Use this to define what the package will export (e.g. libs, headers).
 # Since the default here is to produce only a binary, we don't worry about
 # exporting anything. 
@@ -40,6 +41,8 @@ catkin_package(
     CATKIN_DEPENDS
     message_runtime
     std_msgs
+    geometry_msgs
+    tf
 )
 
 ##############################################################################
