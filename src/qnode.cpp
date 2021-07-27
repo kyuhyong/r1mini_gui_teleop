@@ -135,7 +135,9 @@ void QNode::myCallback_pose(const geometry_msgs::Pose::ConstPtr &msg){
 }
 int QNode::save_current_image() {
   cv::Mat dst;
-  cv::resize(this->img, dst, cv::Size(256, 256));
+  int height = this->img.rows;
+  cv::resize(this->img, dst, cv::Size(height, height));
+  cv::cvtColor(dst, dst, CV_RGB2BGR);
   cv::imwrite(this->img_file_name + "_"+ to_string(img_file_num) + ".jpg", dst);
   return img_file_num++;
 }
