@@ -79,11 +79,11 @@ private Q_SLOTS:
 
   void on_textboxCaptureTitle_textChanged(const QString &arg1);
 
-  void on_spinBoxImageCountNum_valueChanged(int arg1);
-
   void on_buttonCalibrateGyro_clicked();
 
   void on_buttonResetOdom_clicked();
+
+  void on_buttonSetImageCount_clicked();
 
 private:
 	Ui::MainWindowDesign ui;

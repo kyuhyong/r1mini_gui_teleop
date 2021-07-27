@@ -106,7 +106,7 @@ public:
   double get_odo_x();
   double get_odo_y();
   double get_odo_theta();
-  void save_current_image();
+  int save_current_image();
   void set_image_title(string &title);
   void set_image_count(int cnt);
   void service_call_Calg();
@@ -127,14 +127,14 @@ private:
    * Publish cmd_vel
    *******************************/
   ros::Publisher pub_twist;
-  double vel_v_m_s;
-  double vel_w_rad_s;
-  double vel_v_max;
-  double vel_w_max;
-  double vel_v_stepSize;
-  double vel_w_stepSize;
-  void pub_twist_vw(double v, double w);
-  double constrain(double vel, double max, double min);
+  double  vel_v_m_s;
+  double  vel_w_rad_s;
+  double  vel_v_max;
+  double  vel_w_max;
+  double  vel_v_stepSize;
+  double  vel_w_stepSize;
+  void    pub_twist_vw(double v, double w);
+  double  constrain(double vel, double max, double min);
   /*********************************
    * Subscribe main_camera
    *******************************/

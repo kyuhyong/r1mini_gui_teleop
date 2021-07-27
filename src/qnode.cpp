@@ -133,8 +133,11 @@ void QNode::myCallback_pose(const geometry_msgs::Pose::ConstPtr &msg){
   pose_z = msg->orientation.z;
   Q_EMIT newDataReceived(msgType_pose);
 }
-void QNode::save_current_image() {
-  cv::imwrite(this->img_file_name + "_"+ to_string(img_file_num++) + ".jpg", this->img);
+int QNode::save_current_image() {
+  cv::Mat dst;
+  cv::resize(this->img, dst, cv::Size(256, 256));
+  cv::imwrite(this->img_file_name + "_"+ to_string(img_file_num) + ".jpg", dst);
+  return img_file_num++;
 }
 void QNode::set_image_title(string &title){
   this->img_file_name = title;

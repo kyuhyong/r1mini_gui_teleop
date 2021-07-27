@@ -262,7 +262,8 @@ void r1mini_gui_teleop::MainWindow::on_checkGetIMU_clicked(bool checked)
 
 void r1mini_gui_teleop::MainWindow::on_buttonCaptureImage_clicked()
 {
-    qnode.save_current_image();
+    int imgCnt = qnode.save_current_image();
+    ui.spinBoxImageCountNum->setValue(imgCnt);
 }
 
 void r1mini_gui_teleop::MainWindow::on_textboxCaptureTitle_textChanged(const QString &arg1)
@@ -271,10 +272,6 @@ void r1mini_gui_teleop::MainWindow::on_textboxCaptureTitle_textChanged(const QSt
   qnode.set_image_title(utf8_text);
 }
 
-void r1mini_gui_teleop::MainWindow::on_spinBoxImageCountNum_valueChanged(int arg1)
-{
-  qnode.set_image_count(arg1);
-}
 
 void r1mini_gui_teleop::MainWindow::on_buttonCalibrateGyro_clicked()
 {
@@ -284,4 +281,11 @@ void r1mini_gui_teleop::MainWindow::on_buttonCalibrateGyro_clicked()
 void r1mini_gui_teleop::MainWindow::on_buttonResetOdom_clicked()
 {
     qnode.service_call_resetOdom();
+}
+
+void r1mini_gui_teleop::MainWindow::on_buttonSetImageCount_clicked()
+{
+   int cntVal = ui.spinBoxImageCountNum->value();
+   std::cout<<"CNT = "<<cntVal<<std::endl;
+   qnode.set_image_count(cntVal);
 }

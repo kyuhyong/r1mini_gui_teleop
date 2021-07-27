@@ -130,6 +130,19 @@
             <string>Count</string>
            </property>
           </widget>
+          <widget class="QPushButton" name="buttonSetImageCount">
+           <property name="geometry">
+            <rect>
+             <x>230</x>
+             <y>30</y>
+             <width>89</width>
+             <height>25</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Count Set</string>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
