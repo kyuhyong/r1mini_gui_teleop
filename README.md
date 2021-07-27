@@ -4,16 +4,39 @@
 
 This project is about demonstrating how to implement GUI based controller for R1mini robot.
 
-## Installation
+## Setup for coding with QT-creator-ROS
 
-### ROS QT Installation
+### QT-creator installation
+
+If you don't want to change the UI panel, skip this part and move to install additional packages.
 
 Follow instruction below to install ROS-QT.
 https://ros-qtc-plugin.readthedocs.io/en/latest/_source/How-to-Install-Users.html
 
-### Additional packages
+### Setup catkin workspace for QT-creator-ROS
 
-Additional packages can be apt intalled
+Open QT-creator and go to File > New FIle and Project and select **Other Project** 
+Choose ROS Workspace  
+![new project](img/qtsetup1.png)  
+
+Set Project Name and Location as below.
+Set Distribution per your ROS version and Build System is CatkinMake
+Workspace Path should be the same as what you named for your root of catkin workspace.
+
+![Set Project Name & Location](img/qtsetup2.png)  
+
+Leave blank for version control and Finish.  
+![Finish create ROS project](img/qtsetup3.png)  
+
+Now you will see the project similar to below image.  
+![Finish create ROS project](img/qtsetup4.png)  
+
+Find the main_window.ui and you will see QT-designer.  
+![QT designer UI](img/qtsetup5.png)  
+
+## Install Additional packages
+
+Following additional packages maybe required to build this package.
 
 ```
 $ sudo apt install -y libqt4-dev ros-melodic-qt-build ros-melodic-qt-gui
@@ -34,6 +57,27 @@ Back to the /cakin_ws folder and try catkin_make from there.
 ```
 $ catkin_make
 ```
+
+## Usage
+
+Launch this package by entering below command with roscore running
+
+```
+$ rosrun r1mini_gui_teleop r1mini_gui_teleop
+```
+
+Run the r1mini robot and camera simulatneously by entering below command in ssh terminal to robot
+```
+$ roslaunch omo_r1mini_bringup omo_r1mini_robot_camera.launch
+```
+
+Finally you will see the camera image as well as robot's omdometry data as below
+
+![Run this program](img/running1.png)  
+
+You can enter the name of image and count which will be saved as "image_titile_0.jpg", "image_title_1.jpg" and so on upon pressing the capture button.
+
+This feature is convenient for training images for AI networks like YOLO.  
 
 ## Trouble shooting
 
