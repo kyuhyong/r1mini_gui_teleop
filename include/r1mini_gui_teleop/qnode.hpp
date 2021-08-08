@@ -40,6 +40,7 @@
 #include "r1mini_gui_teleop/Onoff.h"    //For set_headlight service
 #include "r1mini_gui_teleop/Calg.h"     //For gyro calibration service
 #include "r1mini_gui_teleop/ResetOdom.h"//For reset odometry data service
+#include "r1mini_gui_teleop/Battery.h"  //For checking battery service
 
 #define MAX_LIN_VEL 1.20
 #define MAX_ANG_VEL 1.80
@@ -55,6 +56,12 @@ namespace r1mini_gui_teleop {
 using std::cout; using std::cin;
 using std::endl; using std::string;
 using std::to_string;
+
+typedef struct batteryStatus {
+  double Voltage;
+  double SOC;
+  double Current;
+}batteryStatusType;
 /*****************************************************************************
 ** Class
 *****************************************************************************/
@@ -111,6 +118,9 @@ public:
   void set_image_count(int cnt);
   void service_call_Calg();
   void service_call_resetOdom();
+  void service_call_Battery();
+  batteryStatusType get_BatteryStatus();
+  void set_BatteryCheckPeriodic(bool set);
 
 Q_SIGNALS:
 	void loggingUpdated();
@@ -168,6 +178,11 @@ private:
   r1mini_gui_teleop::Calg serviceCalg;  //Service calibrate gyro
   ros::ServiceClient clientResetOdom;
   r1mini_gui_teleop::ResetOdom serviceResetOdom;
+  ros::ServiceClient clientBattery;
+  r1mini_gui_teleop::Battery serviceBattery;
+  batteryStatusType myBatteryStatus;
+  bool battery_checkPeriodic;
+  int battery_checkCnt;
 };
 
 }  // namespace r1mini_gui_teleop

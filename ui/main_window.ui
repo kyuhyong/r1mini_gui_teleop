@@ -183,8 +183,8 @@
    </property>
    <property name="minimumSize">
     <size>
-     <width>500</width>
-     <height>655</height>
+     <width>611</width>
+     <height>742</height>
     </size>
    </property>
    <property name="floating">
@@ -361,45 +361,26 @@
             </property>
            </widget>
           </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="checkBoxHeadlightOnOff">
+            <property name="text">
+             <string>Head Light</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="button_move_rev">
+            <property name="text">
+             <string>⬇</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0">
            <widget class="QPushButton" name="button_move_stop">
             <property name="text">
              <string>STOP</string>
             </property>
            </widget>
-          </item>
-          <item row="6" column="2">
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QLabel" name="label_4">
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Roll</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="textbox_pose_x">
-              <property name="enabled">
-               <bool>true</bool>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
           <item row="6" column="4">
            <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -464,17 +445,10 @@
             </item>
            </layout>
           </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="checkBoxHeadlightOnOff">
+          <item row="4" column="0">
+           <widget class="QPushButton" name="buttonCalibrateGyro">
             <property name="text">
-             <string>Head Light</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="0">
-           <widget class="QCheckBox" name="checkGetIMU">
-            <property name="text">
-             <string>Get IMU</string>
+             <string>GYRO Cali</string>
             </property>
            </widget>
           </item>
@@ -508,12 +482,26 @@
             </item>
            </layout>
           </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="button_move_rev">
-            <property name="text">
-             <string>⬇</string>
-            </property>
-           </widget>
+          <item row="9" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>ODOM</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="buttonResetOdom">
+              <property name="text">
+               <string>RESET</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item row="1" column="2">
            <widget class="QPushButton" name="button_move_left">
@@ -538,19 +526,6 @@
             </property>
             <property name="text">
              <string>⤸</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QPushButton" name="buttonSetColor">
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Color Set</string>
             </property>
            </widget>
           </item>
@@ -587,6 +562,26 @@
             </item>
            </layout>
           </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="checkGetIMU">
+            <property name="text">
+             <string>Get IMU</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="button_move_fwd">
+            <property name="maximumSize">
+             <size>
+              <width>100</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>⬆</string>
+            </property>
+           </widget>
+          </item>
           <item row="9" column="3">
            <layout class="QVBoxLayout" name="verticalLayout_9">
             <item>
@@ -617,8 +612,8 @@
             </item>
            </layout>
           </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="button_move_fwd">
+          <item row="3" column="2">
+           <widget class="QPushButton" name="buttonSetColor">
             <property name="maximumSize">
              <size>
               <width>100</width>
@@ -626,16 +621,22 @@
              </size>
             </property>
             <property name="text">
-             <string>⬆</string>
+             <string>Color Set</string>
             </property>
            </widget>
           </item>
-          <item row="9" column="0">
-           <layout class="QVBoxLayout" name="verticalLayout_11">
+          <item row="6" column="2">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
             <item>
-             <widget class="QLabel" name="label_7">
+             <widget class="QLabel" name="label_4">
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
               <property name="text">
-               <string>ODOM</string>
+               <string>Roll</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignCenter</set>
@@ -643,20 +644,100 @@
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="buttonResetOdom">
-              <property name="text">
-               <string>RESET</string>
+             <widget class="QLineEdit" name="textbox_pose_x">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
               </property>
              </widget>
             </item>
            </layout>
           </item>
-          <item row="4" column="0">
-           <widget class="QPushButton" name="buttonCalibrateGyro">
-            <property name="text">
-             <string>GYRO Cali</string>
-            </property>
-           </widget>
+          <item row="10" column="2">
+           <layout class="QVBoxLayout" name="verticalLayout_6">
+            <item>
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Voltage</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="textBox_Voltage">
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="10" column="3">
+           <layout class="QVBoxLayout" name="verticalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>SOC</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="textBox_SOC">
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="10" column="4">
+           <layout class="QVBoxLayout" name="verticalLayout_13">
+            <item>
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Current (mA)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="textBox_Current">
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="10" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_14">
+            <item>
+             <widget class="QPushButton" name="buttonCheckBattery">
+              <property name="text">
+               <string>Check Bat</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QCheckBox" name="checkBox_BatteryPeriodic">
+              <property name="text">
+               <string>Periodic</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>

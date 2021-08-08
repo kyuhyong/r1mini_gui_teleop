@@ -73,6 +73,8 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   vel_w_max = MAX_ANG_VEL;
   vel_v_stepSize = LIN_VEL_STEP_SIZE;
   vel_w_stepSize = ANG_VEL_STEP_SIZE;
+  vel_v_m_s = 0.0;
+  vel_w_rad_s = 0.0;
   pub_twist = n.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
 	chatter_publisher = n.advertise<std_msgs::String>("chatter", 1000);
   // Subscriptions
@@ -88,7 +90,9 @@ bool QNode::init(const std::string &master_url, const std::string &host_url) {
   clientSetHeadlight = n.serviceClient<r1mini_gui_teleop::Onoff>("/set_headlight");
   clientCalg = n.serviceClient<r1mini_gui_teleop::Calg>("/calibrate_gyro");
   clientResetOdom = n.serviceClient<r1mini_gui_teleop::ResetOdom>("/reset_odom");
-
+  clientBattery = n.serviceClient<r1mini_gui_teleop::Battery>("/battery_status");
+  this->battery_checkPeriodic = false;
+  this->battery_checkCnt = 0;
 	start();
 	return true;
 }
@@ -97,6 +101,17 @@ void QNode::run() {
   ros::Rate loop_rate(20);
 	while ( ros::ok() ) {
     pub_twist_vw(vel_v_m_s, vel_w_rad_s);
+    if(battery_checkPeriodic) {
+      if(battery_checkCnt++>19) {
+        battery_checkCnt = 0;
+        if(clientBattery.call(serviceBattery)) {
+          myBatteryStatus.Voltage = serviceBattery.response.volt;
+          myBatteryStatus.SOC = serviceBattery.response.SOC;
+          myBatteryStatus.Current = serviceBattery.response.current;
+          Q_EMIT newDataReceived(msgType_battery);
+        }
+      }
+    }
 		ros::spinOnce();
 		loop_rate.sleep();
 	}
@@ -133,6 +148,7 @@ void QNode::myCallback_pose(const geometry_msgs::Pose::ConstPtr &msg){
   pose_z = msg->orientation.z;
   Q_EMIT newDataReceived(msgType_pose);
 }
+
 int QNode::save_current_image() {
   cv::Mat dst;
   int height = this->img.rows;
@@ -162,7 +178,18 @@ void QNode::service_call_Calg() {
   std::cout<<"Service Call Calg"<<std::endl;
   clientCalg.call(serviceCalg);
 }
-
+void QNode::service_call_Battery() {
+  std::cout<<"Service call Battery"<<std::endl;
+  if(clientBattery.call(serviceBattery)) {
+    myBatteryStatus.Voltage = serviceBattery.response.volt;
+    myBatteryStatus.SOC = serviceBattery.response.SOC;
+    myBatteryStatus.Current = serviceBattery.response.current;
+    //std::cout<<"Battery V:"<<serviceBattery.response.volt<<
+    //           "SOC:"<<serviceBattery.response.SOC<<
+    //           "Current:"<<serviceBattery.response.current<<std::endl;
+    Q_EMIT newDataReceived(msgType_battery);
+  }
+}
 void QNode::service_call_resetOdom() {
   serviceResetOdom.request.x = 0.0;
   serviceResetOdom.request.y = 0.0;
@@ -219,6 +246,13 @@ double QNode::get_Pitch(){
 }
 double QNode::get_Yaw(){
   return pose_z;
+}
+batteryStatusType QNode::get_BatteryStatus(){
+  return myBatteryStatus;
+}
+void  QNode::set_BatteryCheckPeriodic(bool set) {
+  this->battery_checkCnt = 0;
+  this->battery_checkPeriodic = set;
 }
 double QNode::constrain(double vel, double max, double min){
   if(vel > max) return max;

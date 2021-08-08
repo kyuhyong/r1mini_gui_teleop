@@ -151,7 +151,10 @@ void MainWindow::onNewData(QNode::MsgType type)
       ui.textbox_pose_z->setText(QString::number(qnode.get_Yaw()));
       break;
     case QNode::MsgType::msgType_battery:
-
+      batteryStatusType bat = qnode.get_BatteryStatus();
+      ui.textBox_Voltage->setText((QString::number(bat.Voltage)));
+      ui.textBox_SOC->setText((QString::number(bat.SOC)));
+      ui.textBox_Current->setText((QString::number(bat.Current)));
       break;
   }
 }
@@ -288,4 +291,15 @@ void r1mini_gui_teleop::MainWindow::on_buttonSetImageCount_clicked()
    int cntVal = ui.spinBoxImageCountNum->value();
    std::cout<<"CNT = "<<cntVal<<std::endl;
    qnode.set_image_count(cntVal);
+}
+
+void r1mini_gui_teleop::MainWindow::on_buttonCheckBattery_clicked()
+{
+    qnode.service_call_Battery();
+}
+
+void r1mini_gui_teleop::MainWindow::on_checkBox_BatteryPeriodic_clicked(bool checked)
+{
+  if(checked) qnode.set_BatteryCheckPeriodic(true);
+  else qnode.set_BatteryCheckPeriodic(false);
 }
