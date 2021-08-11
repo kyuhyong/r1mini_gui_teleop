@@ -2,7 +2,16 @@
 
 ## Description
 
+For Korean, **한국어**[문서](README_KR.md)  
 This project is about demonstrating how to implement GUI based controller for R1mini robot.
+With this project you can  
+
+- Control R1mini robot  
+- Monitor sensor data  
+- Check battery status  
+- Change LED color  
+- Turn On/Off head light  
+- Capture image from camera attached to Jetson nano  
 
 ## Setup for coding with QT-creator-ROS
 
@@ -39,7 +48,7 @@ Find the main_window.ui and you will see QT-designer.
 Following additional packages maybe required to build this package.
 
 ```
-$ sudo apt install -y libqt4-dev ros-melodic-qt-build ros-melodic-qt-gui
+$ sudo apt install -y libqt4-dev ros-melodic-qt-build ros-melodic-qt-gui libqt4-dev
 $ sudo apt install ros-melodic-qt-gui-app
 ```
 
