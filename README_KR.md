@@ -89,10 +89,11 @@ Image Title에 저장할 이미지의 이름을 입력하고 Capture Image버튼
 
 ### "BOOST_JOIN" 파싱 에러
 
-BOOST_JOIN 관련 에러가 발생하는 경우 아래 문서를 참조하야 문제를 해결합니다.
+BOOST_JOIN 관련 에러가 발생하는 경우 아래 문서를 참조하여 문제를 해결합니다.  
+
 https://answers.ros.org/question/233786/parse-error-at-boost_join/
 
-has_binary_operator.hpp 파일을 열고
+/usr/include/boost/type_traits/detail 폴더 안의 has_binary_operator.hpp 파일을 열고
 
 ```
 $ sudo gedit /usr/include/boost/type_traits/detail/has_binary_operator.hpp
