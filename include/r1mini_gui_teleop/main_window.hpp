@@ -87,8 +87,6 @@ private Q_SLOTS:
 
   void on_buttonCheckBattery_clicked();
 
-  void on_checkBox_BatteryPeriodic_stateChanged(int arg1);
-
   void on_checkBox_BatteryPeriodic_clicked(bool checked);
 
 private:
